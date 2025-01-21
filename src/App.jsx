@@ -1,149 +1,37 @@
-import React, { useState } from 'react';
-    import confetti from 'canvas-confetti';
+import { useState } from 'react'
+    import Confetti from 'react-confetti'
+    import { FaMoon, FaSun } from 'react-icons/fa'
 
-    const quizData = [
-      {
-        question: "What is the prefix for 10^18?",
-        options: ["peta", "exa", "tera", "giga"],
-        answer: "exa",
-      },
-      {
-        question: "What is the prefix for 10^15?",
-        options: ["peta", "exa", "tera", "giga"],
-        answer: "peta",
-      },
-      {
-        question: "What is the prefix for 10^12?",
-        options: ["peta", "exa", "tera", "giga"],
-        answer: "tera",
-      },
-      {
-        question: "What is the prefix for 10^9?",
-        options: ["peta", "exa", "tera", "giga"],
-        answer: "giga",
-      },
-      {
-        question: "What is the prefix for 10^6?",
-        options: ["mega", "kilo", "hecto", "deca"],
-        answer: "mega",
-      },
-      {
-        question: "What is the prefix for 10^3?",
-        options: ["mega", "kilo", "hecto", "deca"],
-        answer: "kilo",
-      },
-        {
-        question: "What is the prefix for 10^2?",
-        options: ["mega", "kilo", "hecto", "deca"],
-        answer: "hecto",
-      },
-      {
-        question: "What is the prefix for 10^1?",
-        options: ["mega", "kilo", "hecto", "deca"],
-        answer: "deca",
-      },
-      {
-        question: "What is the prefix for 10^-1?",
-        options: ["deci", "centi", "milli", "micro"],
-        answer: "deci",
-      },
-      {
-        question: "What is the prefix for 10^-2?",
-         options: ["deci", "centi", "milli", "micro"],
-        answer: "centi",
-      },
-      {
-        question: "What is the prefix for 10^-3?",
-        options: ["deci", "centi", "milli", "micro"],
-        answer: "milli",
-      },
-       {
-        question: "What is the prefix for 10^-6?",
-        options: ["deci", "centi", "milli", "micro"],
-        answer: "micro",
-      },
-      {
-        question: "What is the prefix for 10^-9?",
-        options: ["nano", "pico", "femto", "atto"],
-        answer: "nano",
-      },
-      {
-        question: "What is the prefix for 10^-12?",
-        options: ["nano", "pico", "femto", "atto"],
-        answer: "pico",
-      },
-      {
-        question: "What is the prefix for 10^-15?",
-        options: ["nano", "pico", "femto", "atto"],
-        answer: "femto",
-      },
-      {
-        question: "What is the prefix for 10^-18?",
-        options: ["nano", "pico", "femto", "atto"],
-        answer: "atto",
-      },
-    ];
+    export default function App() {
+      const [showConfetti, setShowConfetti] = useState(false)
+      const [isDarkMode, setIsDarkMode] = useState(false)
 
-    function App() {
-      const [currentQuestion, setCurrentQuestion] = useState(0);
-      const [score, setScore] = useState(0);
-      const [showResult, setShowResult] = useState(false);
-      const [feedback, setFeedback] = useState('');
-
-      const handleAnswer = (selectedOption) => {
-        if (selectedOption === quizData[currentQuestion].answer) {
-          setScore(score + 1);
-          setFeedback('');
-          confetti({
-            particleCount: 200,
-            spread: 160,
-            origin: { y: 0.7 },
-          });
-        } else {
-          setFeedback(`Incorrect! The correct answer is ${quizData[currentQuestion].answer}`);
-        }
-
-        const nextQuestion = currentQuestion + 1;
-        if (nextQuestion < quizData.length) {
-          setCurrentQuestion(nextQuestion);
-        } else {
-          setShowResult(true);
-        }
-      };
-
-      const resetQuiz = () => {
-        setCurrentQuestion(0);
-        setScore(0);
-        setShowResult(false);
-        setFeedback('');
-      };
+      const toggleDarkMode = () => {
+        setIsDarkMode(!isDarkMode)
+        document.documentElement.classList.toggle('dark')
+      }
 
       return (
-        <div className="quiz-container">
-          {showResult ? (
-            <div className="result">
-              <h2>
-                You scored {score} out of {quizData.length}
-              </h2>
-              <button onClick={resetQuiz}>Restart Quiz</button>
-            </div>
-          ) : (
-            <>
-              <div className="question">
-                {currentQuestion + 1}. {quizData[currentQuestion].question}
-              </div>
-              <div className="options">
-                {quizData[currentQuestion].options.map((option, index) => (
-                  <button key={index} onClick={() => handleAnswer(option)}>
-                    {option}
-                  </button>
-                ))}
-              </div>
-              {feedback && <p className={feedback.startsWith('Incorrect') ? 'incorrect-answer' : 'correct-answer'}>{feedback}</p>}
-            </>
-          )}
-        </div>
-      );
-    }
+        <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4">
+          {showConfetti && <Confetti />}
+          
+          <h1 className="text-6xl font-bold text-center">
+            🎉 Hello World! 🌍✨
+          </h1>
+          
+          <button
+            onClick={() => setShowConfetti(true)}
+            className="mt-8 px-8 py-4 text-2xl font-bold bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all duration-300 transform hover:scale-105"
+          >
+            🎊 Launch Confetti! 🎊
+          </button>
 
-    export default App;
+          <button
+            onClick={toggleDarkMode}
+            className="fixed top-4 right-4 p-3 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+          >
+            {isDarkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-600" />}
+          </button>
+        </div>
+      )
+    }
